@@ -122,7 +122,53 @@ class ProductCreateView(View):
                 "form": form
             }
             return render(request, self.template_name, viewData)
-        
+
 
 class ProductCreatedView(TemplateView):
     template_name = 'pages/products/success.html'
+
+
+# ------------------ Cart Views ------------------
+
+class CartRemoveAllView(View):
+    def post(self, request):
+        if 'cart_product_data' in request.session:
+            del request.session['cart_product_data']
+        return redirect('cart_index')
+
+
+class CartView(View):
+    template_name = 'pages/cart/index.html'
+
+    def get(self, request):
+        all_products = Product.objects.all()
+        cart_product_data = request.session.get('cart_product_data', {})
+
+        cart_products = []
+        for product_id_str, quantity in cart_product_data.items():
+            try:
+                product = Product.objects.get(id=int(product_id_str))
+                cart_products.append({
+                    'product': product,
+                    'quantity': quantity
+                })
+            except Product.DoesNotExist:
+                continue
+
+        view_data = {
+            'title': 'Cart - Online Store',
+            'subtitle': 'Shopping Cart',
+            'available_products': all_products,
+            'cart_products': cart_products
+        }
+        return render(request, self.template_name, view_data)
+
+    def post(self, request, product_id):
+        cart_product_data = request.session.get('cart_product_data', {})
+        product_id_str = str(product_id)
+        if product_id_str in cart_product_data:
+            cart_product_data[product_id_str] += 1
+        else:
+            cart_product_data[product_id_str] = 1
+        request.session['cart_product_data'] = cart_product_data
+        return redirect('cart_index')

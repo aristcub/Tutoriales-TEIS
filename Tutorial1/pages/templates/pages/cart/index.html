@@ -1,0 +1,50 @@
+{% extends 'pages/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block header_title %}{{ subtitle }}{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      <h1>Available products</h1>
+      <ul>
+        {% for product in available_products %}
+          <li>
+            {{ product.id }} - {{ product.name }} - ${{ product.price }}
+            <form method="post" action="{% url 'cart_add' product.id %}">
+              {% csrf_token %}
+              <button type="submit">Add to cart</button>
+            </form>
+          </li>
+        {% empty %}
+          <li>No products available.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="row justify-content-center mt-5">
+    <div class="col-md-12">
+      <h1>Products in cart</h1>
+      <ul>
+        {% for item in cart_products %}
+          <li>
+            {{ item.product.name }} - ${{ item.product.price }} 
+            × {{ item.quantity }}
+          </li>
+        {% empty %}
+          <li>Your cart is empty.</li>
+        {% endfor %}
+      </ul>
+
+      {% if cart_products %}
+        <form method="post" action="{% url 'cart_removeAll' %}">
+          {% csrf_token %}
+          <button type="submit">Remove all products from cart</button>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
