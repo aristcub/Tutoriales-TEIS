@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
+from django.views import View
+
+# ------------------ Static Pages ------------------
 
 class HomePageView(TemplateView):
     template_name = 'pages/home.html'
@@ -29,3 +32,38 @@ class ContactPageView(TemplateView):
             "subtitle": "Contact Us",
         })
         return context
+
+# ------------------ Product Views ------------------
+
+class Product:
+    products = [
+        {"id": "1", "name": "TV", "description": "Best TV"},
+        {"id": "2", "name": "iPhone", "description": "Best iPhone"},
+        {"id": "3", "name": "Chromecast", "description": "Best Chromecast"},
+        {"id": "4", "name": "Glasses", "description": "Best Glasses"},
+    ]
+
+
+class ProductIndexView(View):
+    template_name = 'pages/products/index.html'
+
+    def get(self, request):
+        viewData = {
+            "title": "Products - Online Store",
+            "subtitle": "List of products",
+            "products": Product.products
+        }
+        return render(request, self.template_name, viewData)
+
+
+class ProductShowView(View):
+    template_name = 'pages/products/show.html'
+
+    def get(self, request, id):
+        product = Product.products[int(id) - 1]
+        viewData = {
+            "title": f"{product['name']} - Online Store",
+            "subtitle": f"{product['name']} - Product information",
+            "product": product
+        }
+        return render(request, self.template_name, viewData)
