@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import include, path
 from .views import CartRemoveAllView, CartView, HomePageView, AboutPageView, ContactPageView, ProductCreatedView, ProductIndexView, ProductShowView, ProductCreateView
 
 urlpatterns = [
@@ -14,4 +14,5 @@ urlpatterns = [
     path('cart/', CartView.as_view(), name='cart_index'),
     path('cart/add/<str:product_id>', CartView.as_view(), name='cart_add'),
     path('cart/removeAll', CartRemoveAllView.as_view(), name='cart_removeAll'),
+    path('accounts/', include('accounts.urls')),
 ]
