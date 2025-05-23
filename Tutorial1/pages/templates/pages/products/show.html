@@ -11,7 +11,9 @@
     </div>
     <div class="col-md-8">
       <div class="card-body">
-        <h5 class="card-title">{{ product.name }}</h5>
+        <h5 class="card-title" style="color: {% if product.price > 100 %}red{% else %}black{% endif %};">
+          {{ product.name }}
+        </h5>
         <p class="card-text">{{ product.description }}</p>
         <p class="card-text"><strong>Price:</strong> ${{ product.price }}</p>
       </div>
