@@ -1,0 +1,16 @@
+{% extends "pages/base.html" %}
+{% block content %}
+  <div class="container">
+    <h2>Lista de Tareas</h2>
+    <ul>
+      {% for todo in todos %}
+        <li>
+          <strong>{{ todo.title }}</strong>: {{ todo.memo }} <br>
+          <small>Creado: {{ todo.created }} | ¿Completado?: {{ todo.completed }}</small>
+        </li>
+      {% empty %}
+        <li>No hay tareas.</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

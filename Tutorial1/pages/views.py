@@ -8,6 +8,7 @@ from django.core.exceptions import ValidationError
 
 from pages.utils import ImageLocalStorage
 from .models import Product
+import requests
 
 # ------------------ Static Pages ------------------
 
@@ -202,3 +203,27 @@ class ImageViewNoDI(View):
         image_url = image_storage.store(request)
         request.session['image_url'] = image_url
         return redirect('imagenotdi')  
+
+
+# ------------------ API ------------------
+
+
+#Para que funcione la api use el python3 manage.py runserver 0.0.0.0:8001
+#en el otro proyecto, y ya me agarra el def. lista_todos.
+
+def lista_todos(request):
+    url = 'http://0.0.0.0:8001//api/todos/'
+    headers = {
+        'Authorization': 'Token e13d0a1205b8ab7713f6b2d028426eff3fbafb26' #no deberia hardcodear esto, perooooo
+    }
+
+
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        todos = response.json()
+    except requests.RequestException as e:
+        todos = []
+        print("Error al consumir la API:", e)
+
+    return render(request, 'pages/todos.html', {'todos': todos})

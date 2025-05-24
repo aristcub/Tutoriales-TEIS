@@ -1,3 +1,4 @@
+from . import views
 from django.urls import include, path
 
 from pages.utils import ImageLocalStorage
@@ -21,4 +22,6 @@ urlpatterns = [
     path('image/save', ImageViewFactory(ImageLocalStorage()).as_view(), name='image_save'),
     path('image/save', ImageViewNoDI.as_view(), name='imagenodi_save'),
     path('imagenotdi/', ImageViewNoDI.as_view(), name='imagenotdi'),
+    path('todos/', views.lista_todos, name='lista_todos'),
 ]
+
