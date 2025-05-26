@@ -29,3 +29,4 @@ jobs:
 
       - name: Push Docker image to DockerHub
         run: docker push aristcub/randomquotes-flask:latest
+
