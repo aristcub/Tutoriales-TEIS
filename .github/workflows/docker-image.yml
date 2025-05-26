@@ -9,7 +9,8 @@ runs-on: ubuntu-latest
 steps:
 - uses: actions/checkout@v4 - name: docker login
 env:
-DOCKER_USER: ${{secrets.DOCKERHUB_USER}} DOCKER_PASS: ${{secrets.DOCKERHUB_PASS}}
+DOCKER_USER: ${{secrets.DOCKERHUB_USER}} 
+DOCKER_PASS: ${{secrets.DOCKERHUB_PASS}}
 run: |
 docker login -u $DOCKER_USER -p $DOCKER_PASS
 - name: Build the Docker image
