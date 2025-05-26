@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Docker Build & Push for RandomQuotes Flask
 
 on:
   push:
@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -20,8 +21,11 @@ jobs:
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
 
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag aristcub/express-randomquotes:latest
+      - name: Build Docker image from `randomquotes-flask/`
+        run: |
+          docker build ./randomquotes-flask \
+            --file ./randomquotes-flask/Dockerfile \
+            --tag aristcub/randomquotes-flask:latest
 
-      - name: Push Docker image
-        run: docker push aristcub/express-randomquotes
+      - name: Push Docker image to DockerHub
+        run: docker push aristcub/randomquotes-flask:latest
