@@ -21,12 +21,10 @@ jobs:
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
 
-      - name: Build Docker image from `randomquotes-flask/`
+      - name: Build Docker image from randomquotes-flask/
         run: |
-          docker build ./randomquotes-flask \
-            --file ./randomquotes-flask/Dockerfile \
-            --tag aristcub/randomquotes-flask:latest
+          cd randomquotes-flask
+          docker build . -t aristcub/randomquotes-flask:latest
 
       - name: Push Docker image to DockerHub
         run: docker push aristcub/randomquotes-flask:latest
-
