@@ -1,0 +1,31 @@
+name: Docker Build & Push for RandomQuotes Flask
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Docker Login
+        env:
+          DOCKER_USER: ${{ secrets.DOCKERHUB_USER }}
+          DOCKER_PASS: ${{ secrets.DOCKERHUB_PASS }}
+        run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
+
+      - name: Build Docker image from `randomquotes-flask/`
+        run: |
+          docker build ./randomquotes-flask \
+            --file ./randomquotes-flask/Dockerfile \
+            --tag aristcub/randomquotes-flask:latest
+
+      - name: Push Docker image to DockerHub
+        run: docker push aristcub/randomquotes-flask:latest
